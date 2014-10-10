@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+  <constant name="struts.ui.theme" value="simple" />
+  <constant name="struts.action.extension" value="htl"/> 
+  <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
+  <constant name="struts.devMode" value="true"/>
+  
+    <package name="default" extends="tiles-default" namespace="/">
+        <result-types>
+            <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
+        </result-types>
+ 
+        <!--action name="login" method="authenticate"
+            class="struts2.example.LoginAction">
+            <result name="success" type="tiles">/welcome.tiles</result>
+            <result name="error" type="tiles">/index.jsp</result>
+        </action-->
+ 
+        <action name="login" class="ara.soft.john.htl.actions.site.Login">
+            <result name="CORRECTO">/site/login.jsp</result>
+            <result name="DO_LOGIN" type="redirect">pagInicio.htl</result>
+        </action>
+        
+        <action name="pagInicio" class="ara.soft.john.htl.actions.base.ActionBase">
+            <!--result name="CORRECTO" type="tiles">pagInicioTile</result-->
+            <result name="CORRECTO" type="redirect">mantUsuario.htl</result>
+        </action>
+        
+        <action name="mantUsuario" class="ara.soft.john.htl.actions.site.MantenimientoUsuarios">
+            <result name="CORRECTO" type="tiles">mantenimientoUsuarioTile</result>
+        </action>
+        
+    </package>
+</struts>
