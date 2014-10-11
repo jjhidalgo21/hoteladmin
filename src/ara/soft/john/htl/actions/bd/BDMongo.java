@@ -1,19 +1,12 @@
 package ara.soft.john.htl.actions.bd;
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.bson.types.ObjectId;
 
 import ara.soft.john.htl.security.Rol;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 public class BDMongo {
@@ -91,7 +84,7 @@ public class BDMongo {
 			BasicDBObject doc = new BasicDBObject("user", "admin")
 	        .append("pass", "admin").append("roles", collRol.find().toArray())//aqui inserta la lista de roles
 	        .append("identificacion", "0000").append("nombre", "Administrador General")
-	        .append("activo", 0).append("correo", "c.andreyagro@gmail.com").append("puesto", "Administrador del Sistema");
+	        .append("activo", "true").append("correo", "c.andreyagro@gmail.com").append("puesto", "Administrador del Sistema");
 			
 			coll.insert(doc);
 		}

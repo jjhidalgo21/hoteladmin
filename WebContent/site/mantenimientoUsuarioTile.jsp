@@ -1,3 +1,6 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="ara.soft.john.htl.utils.FormValidation"%>
+<%@page import="ara.soft.john.htl.actions.site.MantenimientoUsuarios"%>
 <%@page import="com.mongodb.DBObject"%>
 <%@page import="com.mongodb.BasicDBObject"%>
 <%@page import="java.util.List"%>
@@ -67,6 +70,7 @@ String action = request.getParameter("action");
                     		
                     		for(DBObject ob : listaUsuarios){
                     	%>
+                    	<tr>
                     		<td><%=ob.get("user")%></td>
                             <td><%=ob.get("identificacion")%></td>
                             <td><%=ob.get("nombre")%></td>
@@ -97,10 +101,11 @@ String action = request.getParameter("action");
                             <td>
                             	 <div class="checkbox">
                                      <label>
-                                         <input type="checkbox" <%=((Integer) ob.get("activo")).intValue() == 1? "checked=\"checked\"" : ""%> disabled>
+                                         <input type="checkbox" <%=(Boolean.valueOf(((String)ob.get("activo")))? "checked=\"checked\"" : "")%> disabled>
                                      </label>
                                  </div>
                             </td>
+                          </tr>
                     	<%	
                     		}
                     	%>
@@ -133,27 +138,52 @@ String action = request.getParameter("action");
 	            <h3 class="box-title">Insertar/Editar Usuario</h3>
 	        </div><!-- /.box-header -->
 	        <div class="box-body">
-	            <form role="form">
+	        	<%
+	        	ArrayList<String[]> listaErroresParam = (ArrayList<String[]>) request.getAttribute("listaErroresParametros");
+	        	boolean auxHayError = false;//por defecto false
+	        	%>
+	        	
+	        	<%auxHayError = FormValidation.hayErrorParam("user", listaErroresParam);%>
+	        	<s:form action="?action=form&do=save" method="POST">
 	                <!-- text input -->
-	                <div class="form-group">
-	                    <label>Usuario</label>
+	                <div class="form-group <%= auxHayError? "has-error" : "" %>">
+	                	<%if(auxHayError){%>
+	                		<label class="control-label" ><i class="fa fa-times-circle-o"></i>Usuario<%= FormValidation.getErrorMessage("user", listaErroresParam)%></label>
+	                	<%}else {%>
+	                		<label>Usuario</label>
+	                	<%}%>
 	                    <s></s>
-	                    <s:textfield name="usuario" cssClass="form-control" placeholder="Escriba aquí ..." />
+	                    <s:textfield name="req_user" cssClass="form-control" placeholder="Escriba aquí ..." />
 	                </div>
-	                <div class="form-group">
-	                    <label>Nombre Completo</label>
+	                <%auxHayError = FormValidation.hayErrorParam("nombre", listaErroresParam);%>
+	                <div class="form-group <%= auxHayError? "has-error" : "" %>">
+	                    <%if(auxHayError){%>
+	                		<label class="control-label" ><i class="fa fa-times-circle-o"></i>Nombre Completo<%= FormValidation.getErrorMessage("nombre", listaErroresParam)%></label>
+	                	<%}else {%>
+	                		<label>Nombre Completo</label>
+	                	<%}%>
 	                    <s></s>
-	                    <s:textfield name="nombre" cssClass="form-control" placeholder="Escriba aquí ..." />
+	                    <s:textfield name="req_nombre" cssClass="form-control" placeholder="Escriba aquí ..." />
 	                </div>
-	                <div class="form-group">
-	                    <label>Identificación</label>
+	                <%auxHayError = FormValidation.hayErrorParam("identificacion", listaErroresParam);%>
+	                <div class="form-group <%= auxHayError? "has-error" : "" %>">
+	                	<%if(auxHayError){%>
+	                		<label class="control-label" ><i class="fa fa-times-circle-o"></i>Identificación<%= FormValidation.getErrorMessage("identificacion", listaErroresParam)%></label>
+	                	<%}else {%>
+	                		<label>Identificación</label>
+	                	<%}%>
 	                    <s></s>
-	                    <s:textfield name="identificacion" cssClass="form-control" placeholder="Escriba aquí ..." />
+	                    <s:textfield name="req_identificacion" cssClass="form-control" placeholder="Escriba aquí ..." />
 	                </div>
-	                <div class="form-group">
-	                    <label>Correo</label>
+	                <%auxHayError = FormValidation.hayErrorParam("correo", listaErroresParam);%>
+	                <div class="form-group <%= auxHayError? "has-error" : "" %>">
+	                	<%if(auxHayError){%>
+	                		<label class="control-label" ><i class="fa fa-times-circle-o"></i>Correo<%= FormValidation.getErrorMessage("correo", listaErroresParam)%></label>
+	                	<%}else {%>
+	                		<label>Correo</label>
+	                	<%}%>
 	                    <s></s>
-	                    <s:textfield name="correo" cssClass="form-control" placeholder="Escriba aquí ..." />
+	                    <s:textfield name="req_correo" cssClass="form-control" placeholder="Escriba aquí ..." />
 	                </div>
 	                <div class="form-group">
 	                    <label>Puesto</label>
@@ -173,23 +203,33 @@ String action = request.getParameter("action");
 	                    </div>
 	                </div>
 	                <br>
-	                <div class="form-group">
-	                    <label>Contraseña</label>
+	                <%auxHayError = FormValidation.hayErrorParam("pass", listaErroresParam);%>
+	                <div class="form-group <%= auxHayError? "has-error" : "" %>">
+	                	<%if(auxHayError){%>
+	                		<label class="control-label" ><i class="fa fa-times-circle-o"></i>Contraseña<%= FormValidation.getErrorMessage("pass", listaErroresParam)%></label>
+	                	<%}else {%>
+	                		<label>Contraseña</label>
+	                	<%}%>
 	                    <s></s>
-	                    <s:password name="pass" cssClass="form-control" placeholder="Escriba aquí ..." />
+	                    <s:password name="req_pass" cssClass="form-control" placeholder="Escriba aquí ..." />
 	                </div>
-	                <div class="form-group">
-	                    <label>Confirmar Contraseña</label>
+	                <%auxHayError = FormValidation.hayErrorParam("conf_pass", listaErroresParam);%>
+	                <div class="form-group <%= auxHayError? "has-error" : "" %>">
+	                	<%if(auxHayError){%>
+	                		<label class="control-label" ><i class="fa fa-times-circle-o"></i>Confirmar Contraseña<%= FormValidation.getErrorMessage("conf_pass", listaErroresParam)%></label>
+	                	<%}else {%>
+	                		<label>Confirmar Contraseña</label>
+	                	<%}%>
 	                    <s></s>
-	                    <s:password name="passConf" cssClass="form-control" placeholder="Escriba aquí ..." />
+	                    <s:password name="conf_pass" cssClass="form-control" placeholder="Escriba aquí ..." />
 	                </div>
 	                
 	                
 	                <div class="box-footer">
-                        <button type="submit" class="btn btn-primary">Guardar...</button>
+	                	<s:submit cssClass="btn btn-primary" value="Guardar..."/>
                     </div>
 	
-	            </form>
+	            </s:form>
 	        </div><!-- /.box-body -->
 	    </div><!-- /.box -->
 	</div><!--/.col (right) -->
